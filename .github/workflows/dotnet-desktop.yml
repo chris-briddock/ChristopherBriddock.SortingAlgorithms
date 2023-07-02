@@ -22,7 +22,7 @@ jobs:
       id: versioning
       with:
         releaseType: ${{ secrets.RELEASE_TYPE }}
-        incrementPerCommit: false
+        incrementPerCommit: true
         github_token: ${{ secrets.GITHUB_TOKEN }}
     - name: Next Release Number
       run: echo ${{ steps.versioning.outputs.version }}
