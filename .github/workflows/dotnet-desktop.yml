@@ -17,12 +17,20 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
+    - name: Increment version and create tag
+      run: |
+        chmod +x increment_version.sh
+        ./increment_version.sh
+        version=$(dotnet msbuild -property:PackageVersion -nologo -t:PrintVersion src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj)
+        echo "New version: $version"
+        git tag "$version"
+        git push --tags
     - name: Build & Restore
-      run: dotnet build --configuration Release src/ChristopherBriddock.SortingAlgorithms.sln -p:PackageVersion=1.0.1
+      run: dotnet build --configuration Release src/ChristopherBriddock.SortingAlgorithms.sln -p:PackageVersion=$version
     - name: Publish
-      run: dotnet publish src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj -c Release -p:PackageVersion=1.0.1
+      run: dotnet publish src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj -c Release -p:PackageVersion=$version
     - name: Create the package
-      run: dotnet pack --configuration Release src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj -p:PackageVersion=1.0.1
+      run: dotnet pack --configuration Release src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj -p:PackageVersion=$version
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3
       with:
