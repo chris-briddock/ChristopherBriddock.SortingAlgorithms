@@ -25,7 +25,7 @@ jobs:
     - name: Publish
       run: dotnet publish src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj -c Release
     - name: Create the package
-      run: dotnet pack --configuration Release ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj
+      run: dotnet pack --configuration Release src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3
       with:
