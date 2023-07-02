@@ -21,7 +21,7 @@ jobs:
       run: |
         chmod +x increment_version.sh
         ./increment_version.sh
-        version=$(dotnet msbuild -property:PackageVersion -nologo -t:PrintVersion src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj)
+        $version=$(nuget list ChristopherBriddock.SortingAlgorithms)
         echo "New version: $version"
         git tag "$version"
         git push --tags
