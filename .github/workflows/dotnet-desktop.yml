@@ -39,4 +39,4 @@ jobs:
         path: src/ChristopherBriddock.SortingAlgorithms\bin\Release\net7.0\publish
         if-no-files-found: error
     - name: NuGet push
-      run: dotnet nuget push "src\ChristopherBriddock.SortingAlgorithms\bin\Release\*.nupkg" -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push "src\ChristopherBriddock.SortingAlgorithms\bin\Release\*.nupkg" -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
