@@ -5,9 +5,9 @@ name: .NET
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -21,16 +21,16 @@ jobs:
       with:
         dotnet-version: 7.0.x
     - name: Build & Restore
-      run: dotnet build --configuration Release ChristopherBriddock.SortingAlgorithms.sln
+      run: dotnet build --configuration Release src/ChristopherBriddock.SortingAlgorithms.sln
     - name: Publish
-      run: dotnet publish ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj -c Release
+      run: dotnet publish src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj -c Release
     - name: Create the package
       run: dotnet pack --configuration Release ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3
       with:
         name: ChristopherBriddock.SortingAlgorithms
-        path: ChristopherBriddock.SortingAlgorithms/bin/Release/net7.0/publish
+        path: src/ChristopherBriddock.SortingAlgorithms/bin/Release/net7.0/publish
         if-no-files-found: error
     - name: NuGet push
-      run: dotnet nuget push "ChristopherBriddock.SortingAlgorithms/bin/Release/*.nupkg" -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push "src/ChristopherBriddock.SortingAlgorithms/bin/Release/*.nupkg" -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
