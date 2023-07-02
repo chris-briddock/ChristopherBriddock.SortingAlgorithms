@@ -21,7 +21,7 @@ jobs:
       uses: MCKanpolat/auto-semver-action@v1
       id: versioning
       with:
-        releaseType: patch 
+        releaseType: ${{ secrets.RELEASE_TYPE }}
         incrementPerCommit: false
         github_token: ${{ secrets.GITHUB_TOKEN }}
     - name: Next Release Number
