@@ -17,21 +17,12 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
-    - name: Auto Increment Semver Action
-      uses: MCKanpolat/auto-semver-action@v1
-      id: versioning
-      with:
-        releaseType: major
-        incrementPerCommit: true
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Next Release Number
-      run: echo ${{ steps.versioning.outputs.version }}
     - name: Build & Restore
-      run: dotnet build --configuration Release src\ChristopherBriddock.SortingAlgorithms.sln -p:PackageVersion=${{ steps.versioning.outputs.version }}
+      run: dotnet build --configuration Release src\ChristopherBriddock.SortingAlgorithms.sln -p:PackageVersion=${{ secrets.RELEASE_VERSION }}
     - name: Publish
-      run: dotnet publish src\ChristopherBriddock.SortingAlgorithms\ChristopherBriddock.SortingAlgorithms.csproj -c Release -p:PackageVersion=${{ steps.versioning.outputs.version }}
+      run: dotnet publish src\ChristopherBriddock.SortingAlgorithms\ChristopherBriddock.SortingAlgorithms.csproj -c Release -p:PackageVersion=${{ secrets.RELEASE_VERSION }}
     - name: Create the package
-      run: dotnet pack --configuration Release src\ChristopherBriddock.SortingAlgorithms\ChristopherBriddock.SortingAlgorithms.csproj -p:PackageVersion=${{ steps.versioning.outputs.version }}
+      run: dotnet pack --configuration Release src\ChristopherBriddock.SortingAlgorithms\ChristopherBriddock.SortingAlgorithms.csproj -p:PackageVersion=${{ secrets.RELEASE_VERSION }}
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3
       with:
