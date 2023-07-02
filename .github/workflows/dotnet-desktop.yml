@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -17,20 +17,23 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
+    - name: Download and install PowerShell
+      run: |
+        $url = $env:POWERSHELL_URI
+        $output = "$env:TEMP\pwsh.zip"
+        Invoke-WebRequest -Uri $url -OutFile $output
+        Expand-Archive -Path $output -DestinationPath "$env:TEMP\pwsh"
+        $msiFile = Get-ChildItem -Path "$env:TEMP\pwsh" -Filter "*.msi" -Recurse | Select-Object -First 1
+        Start-Process -Wait -FilePath msiexec.exe -ArgumentList "/i `"$($msiFile.FullName)`" /quiet"
     - name: Increment version and create tag
       run: |
-        chmod +x increment_version.sh
-        ./increment_version.sh
-        $version=$(nuget list ChristopherBriddock.SortingAlgorithms)
-        echo "New version: $version"
-        git tag "$version"
-        git push --tags
+        pwsh -File IncrementVersionGithub.ps1
     - name: Build & Restore
-      run: dotnet build --configuration Release src/ChristopherBriddock.SortingAlgorithms.sln -p:PackageVersion=$version
+      run: dotnet build --configuration Release src/ChristopherBriddock.SortingAlgorithms.sln -p:PackageVersion=$env:VERSION_NUMBER
     - name: Publish
-      run: dotnet publish src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj -c Release -p:PackageVersion=$version
+      run: dotnet publish src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj -c Release -p:PackageVersion=$env:VERSION_NUMBER
     - name: Create the package
-      run: dotnet pack --configuration Release src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj -p:PackageVersion=$version
+      run: dotnet pack --configuration Release src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj -p:PackageVersion=$env:VERSION_NUMBER
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3
       with:
