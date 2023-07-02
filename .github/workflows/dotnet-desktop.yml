@@ -27,16 +27,16 @@ jobs:
     - name: Next Release Number
       run: echo ${{ steps.versioning.outputs.version }}
     - name: Build & Restore
-      run: dotnet build --configuration Release src/ChristopherBriddock.SortingAlgorithms.sln -p:PackageVersion=${{ steps.versioning.outputs.version }}
+      run: dotnet build --configuration Release src\ChristopherBriddock.SortingAlgorithms.sln -p:PackageVersion=${{ steps.versioning.outputs.version }}
     - name: Publish
-      run: dotnet publish src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj -c Release -p:PackageVersion=${{ steps.versioning.outputs.version }}
+      run: dotnet publish src\ChristopherBriddock.SortingAlgorithms\ChristopherBriddock.SortingAlgorithms.csproj -c Release -p:PackageVersion=${{ steps.versioning.outputs.version }}
     - name: Create the package
-      run: dotnet pack --configuration Release src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj -p:PackageVersion=${{ steps.versioning.outputs.version }}
+      run: dotnet pack --configuration Release src\ChristopherBriddock.SortingAlgorithms\ChristopherBriddock.SortingAlgorithms.csproj -p:PackageVersion=${{ steps.versioning.outputs.version }}
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3
       with:
         name: ChristopherBriddock.SortingAlgorithms
-        path: src/ChristopherBriddock.SortingAlgorithms/bin/Release/net7.0/publish
+        path: src/ChristopherBriddock.SortingAlgorithms\bin\Release\net7.0\publish
         if-no-files-found: error
     - name: NuGet push
-      run: dotnet nuget push "src/ChristopherBriddock.SortingAlgorithms/bin/Release/*.nupkg" -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push "src\ChristopherBriddock.SortingAlgorithms\bin\Release\*.nupkg" -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
