@@ -1,4 +1,4 @@
-$githubToken = $env:GITHUB_TOKEN
+Param($GithubToken)
 $apiUrl = "https://api.github.com/repos/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID/env"
 $variableName = "VERSION_NUMBER"
 
@@ -16,6 +16,6 @@ $envVarJson = @{
 
 # Update the environment variable using the GitHub API
 Invoke-RestMethod -Uri $apiUrl -Method Patch -Headers @{
-    "Authorization" = "Bearer $githubToken"
+    "Authorization" = "Bearer $GithubToken"
     "Content-Type" = "application/json"
 } -Body $envVarJson
