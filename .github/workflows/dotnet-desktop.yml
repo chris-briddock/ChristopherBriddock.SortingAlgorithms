@@ -19,8 +19,9 @@ jobs:
         dotnet-version: 7.0.x
     - name: Increment version and create tag
       run: |
-        # Run the increment_version_script.ps1 PowerShell script
-        powershell -File IncrementVersion.ps1
+        # Run the increment_version_script.sh shell script
+        chmod +x increment_version_script.sh
+        ./increment_version_script.sh
 
         # Get the new version from the project file (e.g., .csproj)
         version=$(dotnet msbuild -property:Version -nologo -t:PrintVersion src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj)
