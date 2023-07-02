@@ -19,17 +19,10 @@ jobs:
         dotnet-version: 7.0.x
     - name: Increment version and create tag
       run: |
-        # Run the increment_version_script.sh shell script
         chmod +x increment_version.sh
         ./increment_version.sh
-
-        # Get the new version from the project file (e.g., .csproj)
         version=$(dotnet msbuild -property:Version -nologo -t:PrintVersion src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj)
         echo "New version: $version"
-
-        # Create a new Git tag with the version number
-        git tag "$version"
-        git push --tags
     - name: Build & Restore
       run: dotnet build --configuration Release src/ChristopherBriddock.SortingAlgorithms.sln
     - name: Publish
