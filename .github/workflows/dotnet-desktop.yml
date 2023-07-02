@@ -21,7 +21,7 @@ jobs:
       run: |
         # Run the increment_version_script.sh shell script
         chmod +x increment_version_script.sh
-        ./increment_version_script.sh
+        ./increment_version.sh
 
         # Get the new version from the project file (e.g., .csproj)
         version=$(dotnet msbuild -property:Version -nologo -t:PrintVersion src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj)
