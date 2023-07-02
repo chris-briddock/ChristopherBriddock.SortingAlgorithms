@@ -19,7 +19,7 @@ jobs:
         dotnet-version: 7.0.x
     - name: Increment version and create tag
       run: |
-        pwsh -File IncrementVersionGithub.ps1
+        pwsh -File IncrementVersionGithub.ps1 -GithubToken ${{ secrets.GITHUB_TOKEN }}
     - name: Build & Restore
       run: dotnet build --configuration Release src/ChristopherBriddock.SortingAlgorithms.sln -p:PackageVersion=$env:VERSION_NUMBER
     - name: Publish
