@@ -20,7 +20,7 @@ jobs:
     - name: Increment version and create tag
       run: |
         # Run the increment_version_script.sh shell script
-        chmod +x increment_version_script.sh
+        chmod +x increment_version.sh
         ./increment_version.sh
 
         # Get the new version from the project file (e.g., .csproj)
