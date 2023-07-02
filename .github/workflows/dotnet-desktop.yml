@@ -17,14 +17,8 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
-    - name: Increment version and create tag
-      run: |
-        chmod +x increment_version.sh
-        ./increment_version.sh
-        version=$(dotnet msbuild -property:Version -nologo -t:PrintVersion src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj)
-        echo "New version: $version"
     - name: Build & Restore
-      run: dotnet build --configuration Release src/ChristopherBriddock.SortingAlgorithms.sln
+      run: dotnet build --configuration Release src/ChristopherBriddock.SortingAlgorithms.sln -p:PackageVersion=1.0.1
     - name: Publish
       run: dotnet publish src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj -c Release
     - name: Create the package
