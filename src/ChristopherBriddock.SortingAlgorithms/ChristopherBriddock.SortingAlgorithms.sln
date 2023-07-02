@@ -1,0 +1,34 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChristopherBriddock.SortingAlgorithms", "ChristopherBriddock.SortingAlgorithms\ChristopherBriddock.SortingAlgorithms.csproj", "{FCD71FEE-5FBD-4437-827E-94E2F04073F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChristopherBriddock.SortingAlgorithms.Tests", "ChristopherBriddock.SortingAlgorithms.Tests\ChristopherBriddock.SortingAlgorithms.Tests.csproj", "{91C328E4-C9CE-45F2-90C0-5F09CAAD5699}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FCD71FEE-5FBD-4437-827E-94E2F04073F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCD71FEE-5FBD-4437-827E-94E2F04073F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCD71FEE-5FBD-4437-827E-94E2F04073F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCD71FEE-5FBD-4437-827E-94E2F04073F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{924DD1EC-AFE3-4AA3-9E22-FD5AE5F2DD2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{924DD1EC-AFE3-4AA3-9E22-FD5AE5F2DD2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{924DD1EC-AFE3-4AA3-9E22-FD5AE5F2DD2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{924DD1EC-AFE3-4AA3-9E22-FD5AE5F2DD2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91C328E4-C9CE-45F2-90C0-5F09CAAD5699}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91C328E4-C9CE-45F2-90C0-5F09CAAD5699}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91C328E4-C9CE-45F2-90C0-5F09CAAD5699}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91C328E4-C9CE-45F2-90C0-5F09CAAD5699}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C4CD39DF-D491-414B-A4B9-775E26763804}
+	EndGlobalSection
+EndGlobal
