@@ -17,14 +17,6 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
-    - name: Download and install PowerShell
-      run: |
-        $url = $env:POWERSHELL_URI
-        $output = "$env:TEMP\pwsh.zip"
-        Invoke-WebRequest -Uri $url -OutFile $output
-        Expand-Archive -Path $output -DestinationPath "$env:TEMP\pwsh"
-        $msiFile = Get-ChildItem -Path "$env:TEMP\pwsh" -Filter "*.msi" -Recurse | Select-Object -First 1
-        Start-Process -Wait -FilePath msiexec.exe -ArgumentList "/i `"$($msiFile.FullName)`" /quiet"
     - name: Increment version and create tag
       run: |
         pwsh -File IncrementVersionGithub.ps1
