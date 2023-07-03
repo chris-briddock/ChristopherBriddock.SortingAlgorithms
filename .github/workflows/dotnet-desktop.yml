@@ -19,6 +19,8 @@ jobs:
         dotnet-version: 7.0.x
     - name: Build & Restore
       run: dotnet build --configuration Release src\ChristopherBriddock.SortingAlgorithms.sln -p:PackageVersion=${{ secrets.RELEASE_VERSION }}
+    - name: Test
+      run: dotnet test src\ChristopherBriddock.SortingAlgorithms.Tests\ChristopherBriddock.SortingAlgorithms.Tests.csproj
     - name: Publish
       run: dotnet publish src\ChristopherBriddock.SortingAlgorithms\ChristopherBriddock.SortingAlgorithms.csproj -c Release -p:PackageVersion=${{ secrets.RELEASE_VERSION }}
     - name: Create the package
