@@ -9,11 +9,4 @@ updates:
     directory: "/src/"
     schedule:
         interval: daily
-        open-pull-requests-limit: 10 
-
-version: 2
-updates:
-  - package-ecosystem: "beta-ecosystem"
-    directory: "/"
-    schedule:
-      interval: "weekly"
+        open-pull-requests-limit: 10
