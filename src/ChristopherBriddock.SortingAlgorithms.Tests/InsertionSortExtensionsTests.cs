@@ -32,34 +32,24 @@ public class InsertionSortExtensionsTests
     public void InsertionSort_SortsCustomObjectCollection()
     {
         // Arrange
-        List<Person> collection = new()
+        ICollection<Person> collection = new List<Person>
         {
-            new Person { Name = "John", Age = 30 },
-            new Person { Name = "Alice", Age = 25 },
-            new Person { Name = "Bob", Age = 35 }
+            new Person("John", 30),
+            new Person("Alice", 25),
+            new Person("Bob", 35)
+        };
+
+        ICollection<Person> expected = new List<Person>
+        {
+            new Person("Alice",25),
+            new Person("John", 30),
+            new Person("Bob", 35)
         };
 
         // Act
         collection.InsertionSort();
 
         // Assert
-        Assert.Equal(new List<Person>
-        {
-            new Person { Name = "Alice", Age = 25 },
-            new Person { Name = "John", Age = 30 },
-            new Person { Name = "Bob", Age = 35 }
-        }, collection);
-    }
-
-    // Define a custom class for testing
-    private class Person : IComparable<Person>
-    {
-        public string Name { get; set; } = null!;
-        public int Age { get; set; }
-
-        public int CompareTo(Person? other)
-        {
-            return Age.CompareTo(other!.Age);
-        }
+        Assert.Equivalent(collection, expected);
     }
 }
