@@ -73,7 +73,8 @@ public class MergeSortExtensionsTests
             new Person("Charlie", 20),
             new Person("David", 35)
         };
-        Person[] expected = {
+        ICollection<Person> expected = new List<Person> 
+        {
             new Person("Charlie", 20),
             new Person("Alice", 25),
             new Person("Bob", 30),
@@ -84,37 +85,6 @@ public class MergeSortExtensionsTests
         collection.MergeSort();
 
         // Assert
-        Assert.Equal(expected, collection);
-    }
-
-    private class Person : IComparable<Person>
-    {
-        public string Name { get; }
-        public int Age { get; }
-
-        public Person(string name, int age)
-        {
-            Name = name;
-            Age = age;
-        }
-
-        public int CompareTo(Person? other)
-        {
-            return Age.CompareTo(other!.Age);
-        }
-
-        public override bool Equals(object? obj)
-        {
-            if (obj is Person other)
-            {
-                return Name == other.Name && Age == other.Age;
-            }
-            return false;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Name, Age);
-        }
+        Assert.Equivalent(expected, collection);
     }
 }

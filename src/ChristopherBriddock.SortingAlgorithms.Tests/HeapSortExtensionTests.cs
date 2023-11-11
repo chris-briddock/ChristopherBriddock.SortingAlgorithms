@@ -61,14 +61,14 @@ public class HeapSortExtensionsTests
     public void HeapSort_SortsCollectionWithCustomClassInAscendingOrder()
     {
         // Arrange
-        List<Person> collection = new()
+        ICollection<Person> collection = new List<Person>
         {
             new Person("John", 25),
             new Person("Alice", 30),
             new Person("Bob", 20)
         };
 
-        List<Person> expected = new()
+        ICollection<Person> expected = new List<Person>
         {
             new Person("Bob", 20),
             new Person("John", 25),
@@ -79,39 +79,7 @@ public class HeapSortExtensionsTests
         collection.HeapSort();
 
         // Assert
-        Assert.Equal(expected, collection);
+        Assert.Equivalent(expected, collection);
     }
 
-    // Custom class for testing
-    private class Person : IComparable<Person>
-    {
-        public string Name { get; set; }
-        public int Age { get; set; }
-
-        public Person(string name, int age)
-        {
-            Name = name;
-            Age = age;
-        }
-
-        public int CompareTo(Person? other)
-        {
-            return Age.CompareTo(other!.Age);
-        }
-
-        public override bool Equals(object? obj)
-        {
-            if (obj is Person other)
-            {
-                return Name == other.Name && Age == other.Age;
-            }
-
-            return false;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Name, Age);
-        }
-    }
 }

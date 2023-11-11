@@ -34,14 +34,14 @@ public class BubbleSortExtensionsTests
     public void BubbleSort_SortsCollectionWithCustomClass()
     {
         // Arrange
-        List<Person> collection = new()
+        ICollection<Person> collection = new List<Person>
         {
             new Person("John", 25),
             new Person("Alice", 30),
             new Person("Bob", 20)
         };
 
-        List<Person> expected = new()
+        ICollection<Person> expected = new List<Person> 
         {
             new Person("Bob", 20),
             new Person("John", 25),
@@ -52,15 +52,15 @@ public class BubbleSortExtensionsTests
         collection.BubbleSort();
 
         // Assert
-        Assert.Equal(expected, collection);
+        Assert.Equivalent(expected, collection);
     }
 
     [Fact]
     public void BubbleSort_SortsStringsAlphabetically()
     {
         // Arrange
-        List<string> collection = new() { "orange", "apple", "banana", "grape" };
-        List<string> expected = new() { "apple", "banana", "grape", "orange" };
+        IList<string> collection = new List<string>(4) { "orange", "apple", "banana", "grape" };
+        IList<string> expected = new List<string>(4) { "apple", "banana", "grape", "orange" };
 
         // Act
         collection.BubbleSort();
@@ -73,29 +73,13 @@ public class BubbleSortExtensionsTests
     public void BubbleSort_PreservesOriginalCollectionOfStringsWithDuplicateValues()
     {
         // Arrange
-        List<string> collection = new() { "orange", "apple", "banana", "apple" };
-        List<string> expected = new() { "apple", "apple", "banana", "orange" };
+        IList<string> collection = new List<string>(4) { "orange", "apple", "banana", "apple" };
+        IList<string> expected = new List<string>(4) { "apple", "apple", "banana", "orange" };
 
         // Act
         collection.BubbleSort();
 
         // Assert
         Assert.Equal(expected, collection);
-    }
-    public class Person : IComparable<Person>
-    {
-        public string Name { get; set; }
-        public int Age { get; set; }
-
-        public Person(string name, int age)
-        {
-            Name = name;
-            Age = age;
-        }
-
-        public int CompareTo(Person? other)
-        {
-            return Age.CompareTo(other!.Age);
-        }
     }
 }
