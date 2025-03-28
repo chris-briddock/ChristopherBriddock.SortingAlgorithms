@@ -8,28 +8,36 @@ on:
 
 jobs:
   build:
-
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: 9.0.x
+
     - name: Build & Restore
-      run: dotnet build --configuration Release src\ChristopherBriddock.SortingAlgorithms.sln -p:PackageVersion=${{ secrets.RELEASE_VERSION }}
+      run: dotnet build --configuration Release src/ChristopherBriddock.SortingAlgorithms.sln -p:PackageVersion=${{ secrets.RELEASE_VERSION }}
+
     - name: Test
-      run: dotnet test src\ChristopherBriddock.SortingAlgorithms.Tests\ChristopherBriddock.SortingAlgorithms.Tests.csproj
+      run: dotnet test --configuration Release src/ChristopherBriddock.SortingAlgorithms.Tests/ChristopherBriddock.SortingAlgorithms.Tests.csproj
+
     - name: Publish
-      run: dotnet publish src\ChristopherBriddock.SortingAlgorithms\ChristopherBriddock.SortingAlgorithms.csproj -c Release -p:PackageVersion=${{ secrets.RELEASE_VERSION }}
+      run: dotnet publish src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj -c Release -p:PackageVersion=${{ secrets.RELEASE_VERSION }}
+
     - name: Create the package
-      run: dotnet pack --configuration Release src\ChristopherBriddock.SortingAlgorithms\ChristopherBriddock.SortingAlgorithms.csproj -p:PackageVersion=${{ secrets.RELEASE_VERSION }}
+      run: dotnet pack --configuration Release src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj -p:PackageVersion=${{ secrets.RELEASE_VERSION }}
+
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ChristopherBriddock.SortingAlgorithms
-        path: src/ChristopherBriddock.SortingAlgorithms\bin\Release\net8.0\publish
+        path: src/ChristopherBriddock.SortingAlgorithms/bin/Release/net9.0/publish
         if-no-files-found: error
-    - name: NuGet push
-      run: dotnet nuget push "src\ChristopherBriddock.SortingAlgorithms\bin\Release\*.nupkg" -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+
+    - name: Push to GitHub Packages
+      run: dotnet nuget push "src/ChristopherBriddock.SortingAlgorithms/bin/Release/*.nupkg" -k ${{ secrets.GITHUB_TOKEN }} -s "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --skip-duplicate
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
