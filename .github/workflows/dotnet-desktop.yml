@@ -11,33 +11,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 9.0.x
 
-    - name: Build & Restore
-      run: dotnet build --configuration Release src/ChristopherBriddock.SortingAlgorithms.sln -p:PackageVersion=${{ secrets.RELEASE_VERSION }}
+    - name: Add GitHub NuGet Source
+      run: dotnet nuget add source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --name github --username ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
+
+    - name: Restore dependencies
+      run: dotnet restore src/ChristopherBriddock.SortingAlgorithms.sln
+
+    - name: Build
+      run: dotnet build --configuration Release --no-restore src/ChristopherBriddock.SortingAlgorithms.sln -p:PackageVersion=${{ secrets.RELEASE_VERSION }}
 
     - name: Test
-      run: dotnet test --configuration Release src/ChristopherBriddock.SortingAlgorithms.Tests/ChristopherBriddock.SortingAlgorithms.Tests.csproj
+      run: dotnet test --configuration Release --no-build src/ChristopherBriddock.SortingAlgorithms.Tests/ChristopherBriddock.SortingAlgorithms.Tests.csproj
 
-    - name: Publish
-      run: dotnet publish src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj -c Release -p:PackageVersion=${{ secrets.RELEASE_VERSION }}
+    - name: Pack NuGet package
+      run: dotnet pack --configuration Release --no-build src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj -p:PackageVersion=${{ secrets.RELEASE_VERSION }} -o out
 
-    - name: Create the package
-      run: dotnet pack --configuration Release src/ChristopherBriddock.SortingAlgorithms/ChristopherBriddock.SortingAlgorithms.csproj -p:PackageVersion=${{ secrets.RELEASE_VERSION }}
-
-    - name: Upload a Build Artifact
+    - name: Upload Build Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: ChristopherBriddock.SortingAlgorithms
-        path: src/ChristopherBriddock.SortingAlgorithms/bin/Release/net9.0/publish
+        name: nuget-package
+        path: out/*.nupkg
         if-no-files-found: error
 
-    - name: Push to GitHub Packages
-      run: dotnet nuget push "src/ChristopherBriddock.SortingAlgorithms/bin/Release/*.nupkg" -k ${{ secrets.GITHUB_TOKEN }} -s "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --skip-duplicate
+    - name: Push NuGet package to GitHub Packages
+      run: dotnet nuget push "out/*.nupkg" --source "github" --skip-duplicate
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
